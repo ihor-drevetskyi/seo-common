@@ -1,0 +1,28 @@
+{
+  "name": "ihor-drevetskyi/seo-common",
+  "type": "symfony-bundle",
+  "license": "MIT",
+  "homepage": "https://github.com/ihor-drevetskyi/seo-common",
+  "description": "Seo component [Symfony]",
+  "keywords": [
+    "seo"
+  ],
+  "authors": [
+    {
+      "name": "Ihor Drevetskyi",
+      "email": "ihor.drevetskyi@gmail.com",
+      "homepage": "https://www.linkedin.com/in/ihor-drevetskyi/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.4|^8.0",
+    "ext-json": "*",
+    "ihor-drevetskyi/component": "^1.0|*@dev"
+  },
+  "autoload": {
+    "psr-4": {
+      "SeoCommonBundle\\": "src"
+    }
+  }
+}

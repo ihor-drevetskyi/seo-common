@@ -1,0 +1,90 @@
+{% apply spaceless %}
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="preconnect" href="https://www.googletagmanager.com/" crossorigin="">
+    <link rel="preconnect" href="https://www.google-analytics.com/" crossorigin="">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+
+    {% set route = app.request.attributes.get('_route') %}
+    {% set route_params = app.request.attributes.get('_route_params') %}
+
+    {% if route %}
+        {% set current_path = path(route, route_params) %}
+        <meta property="og:url" content="{{ absolute_url(current_path) }}"/>
+        <meta name="twitter:url" content="{{ absolute_url(current_path) }}"/>
+    {% endif %}
+
+    {% set current_locale = app.request.locale %}
+    {% if current_locale == 'ru' %}
+        <meta property="og:locale" content="ru_RU">
+    {% elseif current_locale == 'en' %}
+        <meta property="og:locale" content="en_US">
+    {% elseif current_locale == 'uk' %}
+        <meta property="og:locale" content="uk_UA">
+    {% endif %}
+
+    {% if alternate_links is defined and alternate_links is not empty %}
+        {% for locale, alternate_link in alternate_links %}
+            {% if locale != current_locale %}
+                {% if locale == 'ru' %}
+                    <meta property="og:locale:alternate" content="ru_RU">
+                {% elseif locale == 'en' %}
+                    <meta property="og:locale:alternate" content="en_US">
+                {% elseif locale == 'uk' %}
+                    <meta property="og:locale:alternate" content="uk_UA">
+                {% endif %}
+            {% else %}
+                <link rel="alternate" hreflang="x-default" href="{{ alternate_link }}"/>
+            {% endif %}
+
+            <link rel="alternate" hreflang="{{ locale }}" href="{{ alternate_link }}"/>
+        {% endfor %}
+    {% elseif route %}
+        {% for locale in locales %}
+            {% set alternate_route_params = (route_params|default({}))|merge({'_locale' : locale}) %}
+            {% if locale != current_locale %}
+                {% if locale == 'ru' %}
+                    <meta property="og:locale:alternate" content="ru_RU">
+                {% elseif locale == 'en' %}
+                    <meta property="og:locale:alternate" content="en_US">
+                {% elseif locale == 'uk' %}
+                    <meta property="og:locale:alternate" content="uk_UA">
+                {% endif %}
+            {% else %}
+                <link rel="alternate" hreflang="x-default" href="{{ url(route, alternate_route_params) }}"/>
+            {% endif %}
+            <link rel="alternate" hreflang="{{ locale }}" href="{{ url(route, alternate_route_params) }}"/>
+        {% endfor %}
+    {% endif %}
+
+    {% if seo is defined and seo is not empty %}
+        {% set seo_og = seo.og %}
+        {{ seo.metaTitle|raw }}
+        {{ seo_og.ogTitle|raw }}
+
+        {{ seo.metaDescription|raw }}
+        {{ seo_og.ogDescription|raw }}
+
+        {% block keywords %}
+            {% if seo.metaKeyword is not empty %}
+                <meta name="keywords" content="{{ seo.metaKeyword }}"/>
+            {% endif %}
+        {% endblock %}
+
+        {{ seo.robotsWithHtml|raw }}
+        {{ seo.linkCanonical|raw }}
+        {{ seo_og.ogTypeWithHtml|raw }}
+
+        {% block og_image %}
+            {% if seo_og.ogImage is defined and seo_og.ogImage is not empty %}
+                {% set og_image = asset(vich_uploader_asset(seo_og, 'ogImage')) %}
+                <meta property="og:image" content="{{ og_image }}"/>
+                <meta name="twitter:image" content="{{ og_image }}"/>
+                <meta property="og:image:secure_url" content="{{ og_image }}"/>
+            {% endif %}
+        {% endblock %}
+    {% endif %}
+
+    {% if breadcrumbs is defined and breadcrumbs is not empty %}
+        <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{% for breadcrumb in breadcrumbs %}{"@type":"ListItem","position":"{{ loop.index }}","item":{"@id":"{{ breadcrumb['url'] }}","name":"{{ breadcrumb['title'] }}"}}{% if not loop.last %},{% endif %}{% endfor %}]}</script>
+    {% endif %}
+{% endapply %}

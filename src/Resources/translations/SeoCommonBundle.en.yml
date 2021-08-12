@@ -1,0 +1,27 @@
+form:
+  seo:
+    meta_title: 'The page title (SEO)'
+    og_title: 'The page title (OG)'
+    meta_keyword: 'Keywords page (SEO)'
+    meta_description: 'description page (SEO)'
+    og_description: 'description page (OG)'
+    bread_crumbs: 'Bread crumbs'
+    h1: 'H1'
+    og_image: 'Image (OG)'
+    link_canonical: 'Canonical link'
+    og_type:
+      og_type: 'Object type (OG)'
+      article: 'Article'
+      website: 'Web-site'
+      product: 'Product'
+    robots:
+      robots: 'Robots'
+      index_follow: 'Allow page indexing and the use of links placed on it for subsequent indexing'
+      no_index_follow: 'To prohibit indexing of the page, to allow the use of links placed on it for subsequent indexing'
+      index_no_follow: 'Allow page indexing, prohibit the use of links placed on it for subsequent indexing'
+      no_index_no_follow: 'Prevent page indexing and the use of links placed on it for subsequent indexing'
+
+sidebar:
+  configuration:
+    seo: 'SEO'
+    seo_block: 'SEO block'
