@@ -31,17 +31,17 @@ class SeoPatternRepository extends AbstractRepository implements SeoPatternRepos
 
     /**
      * @param string $system_name
+     * @param bool $use_cache
      * @return object|null
      */
-    public function findSeoPatternBySystemName(string $system_name): ?object
+    public function findSeoPatternBySystemName(string $system_name, bool $use_cache = true): ?object
     {
         $construct_filter = $this->getConstructFilter();
         $construct_filter->setSystemName($system_name);
         $construct_filter->setUseGetQueryBuilder(false);
 
-        return $this->getOneOrNullResult($this->constructQueryBuilder($construct_filter), true, 86400);
+        return $this->getOneOrNullResult($this->constructQueryBuilder($construct_filter), $use_cache, 86400);
     }
-
 
     /**
      * @param ResourceInterface $resource

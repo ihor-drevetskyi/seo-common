@@ -60,6 +60,7 @@ class SeoService implements SeoServiceInterface
      * @param string|null $title_pattern_uk
      * @param string|null $title_pattern_ru
      * @param string|null $title_pattern_en
+     * @param bool $use_cache
      * @return EntitySeoPatternInterface
      * @throws ORMException
      * @throws OptimisticLockException
@@ -68,10 +69,11 @@ class SeoService implements SeoServiceInterface
         string  $system_name,
         ?string $title_pattern_uk = null,
         ?string $title_pattern_ru = null,
-        ?string $title_pattern_en = null
+        ?string $title_pattern_en = null,
+        bool    $use_cache = true
     ): EntitySeoPatternInterface
     {
-        $seo_pattern = $this->getSeoPattern($system_name, false);
+        $seo_pattern = $this->getSeoPattern($system_name, false, $use_cache);
 
         if (!($seo_pattern instanceof EntitySeoPatternInterface)) {
             $seo_pattern = new EntitySeoPattern();
@@ -126,11 +128,12 @@ class SeoService implements SeoServiceInterface
     /**
      * @param string $system_name
      * @param bool $exception
+     * @param bool $use_cache
      * @return EntitySeoPatternInterface|null
      */
-    public function getSeoPattern(string $system_name, bool $exception = true): ?EntitySeoPatternInterface
+    public function getSeoPattern(string $system_name, bool $exception = true, bool $use_cache = true): ?EntitySeoPatternInterface
     {
-        $seo_pattern = $this->seo_pattern_repository->findSeoPatternBySystemName($system_name);
+        $seo_pattern = $this->seo_pattern_repository->findSeoPatternBySystemName($system_name, $use_cache);
 
         if (!($seo_pattern instanceof EntitySeoPatternInterface) && $exception) {
             throw new InvalidArgumentException($system_name . ' - does not exist!');

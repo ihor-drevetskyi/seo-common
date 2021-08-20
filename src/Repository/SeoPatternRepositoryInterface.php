@@ -13,7 +13,8 @@ interface SeoPatternRepositoryInterface extends AbstractRepositoryInterface
 {
     /**
      * @param string $system_name
+     * @param bool $use_cache
      * @return object|null
      */
-    public function findSeoPatternBySystemName(string $system_name): ?object;
+    public function findSeoPatternBySystemName(string $system_name, bool $use_cache = true): ?object;
 }
